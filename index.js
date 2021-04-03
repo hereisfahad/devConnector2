@@ -3,8 +3,9 @@ import dotenv from 'dotenv'
 import { connectDB } from './db.js'
 
 // app routes
-import users from './routes/api/users.js'
-import auth from './routes/api/auth.js'
+import usersRoutes from './routes/api/users.js'
+import authRoutes from './routes/api/auth.js'
+import profileRoutes from './routes/api/profile.js'
 
 dotenv.config()
 const app = express()
@@ -21,8 +22,9 @@ app.get('/', (_, res) => {
 })
 
 //defining routes
-app.use("/api/users", users);
-app.use("/api/auth", auth);
+app.use("/api/users", usersRoutes);
+app.use("/api/auth", authRoutes);
+app.use("/api/profile", profileRoutes);
 
 app.listen(port, () => {
     console.log(`Server listening at ${serverURL}:${port}`)
