@@ -6,6 +6,7 @@ import { connectDB } from './db.js'
 import usersRoutes from './routes/api/users.js'
 import authRoutes from './routes/api/auth.js'
 import profileRoutes from './routes/api/profile.js'
+import postsRoutes from './routes/api/posts.js'
 
 dotenv.config()
 const app = express()
@@ -25,6 +26,7 @@ app.get('/', (_, res) => {
 app.use("/api/users", usersRoutes);
 app.use("/api/auth", authRoutes);
 app.use("/api/profile", profileRoutes);
+app.use("/api/posts", postsRoutes);
 
 app.listen(port, () => {
     console.log(`Server listening at ${serverURL}:${port}`)
