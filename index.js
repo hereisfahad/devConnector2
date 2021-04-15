@@ -1,5 +1,6 @@
 import express from 'express'
 import dotenv from 'dotenv'
+import cors from 'cors'
 import { connectDB } from './db.js'
 
 // app routes
@@ -10,6 +11,7 @@ import postsRoutes from './routes/api/posts.js'
 
 dotenv.config()
 const app = express()
+app.use(cors())
 app.use(express.urlencoded({ extended: false }))
 app.use(express.json())
 
