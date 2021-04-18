@@ -4,6 +4,7 @@ import User from "../../models/User.js";
 import { body, validationResult } from "express-validator";
 import bcrypt from "bcrypt";
 import jwt from "jsonwebtoken";
+import cookie from 'cookie';
 
 const router = express.Router();
 
@@ -26,7 +27,7 @@ router.post(
     if (!errors.isEmpty()) {
       return res.status(400).json({ errors: errors.array() });
     }
-    
+
     const { email, password } = req.body;
     try {
       //check if user already exists in database
@@ -53,13 +54,39 @@ router.post(
       jwt.sign(
         payload,
         process.env.jwtSecret,
-        { expiresIn: 36000 },
+        { expiresIn: '1d' },
         (error, token) => {
           if (error) throw error;
-          //send back jsonwebtoken
-          res.json({ token });
+          res.setHeader('Set-Cookie',
+            cookie.serialize('token', token, {
+              httpOnly: true,
+              secure: process.env.NODE_ENV !== "development",
+              maxAge: 60 * 60 * 24, // 1 day
+              sameSite: "strict",
+              path: "/"
+            }))
+          return res.json({ sucess: true });
         }
       );
+    } catch (error) {
+      res.status(500).json("server error");
+    }
+  }
+);
+
+router.post(
+  "/logout",
+  async (_, res) => {
+    try {
+      res.setHeader('Set-Cookie',
+        cookie.serialize('token', "", {
+          httpOnly: true,
+          secure: process.env.NODE_ENV !== "development",
+          expires: new Date(0),
+          sameSite: "strict",
+          path: "/"
+        }))
+      return res.json({ sucess: true });
     } catch (error) {
       res.status(500).json("server error");
     }

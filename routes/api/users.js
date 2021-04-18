@@ -18,7 +18,7 @@ router.post(
     if (!errors.isEmpty()) {
       return res.status(400).json({ errors: errors.array() });
     }
-    
+
     const { name, email, password } = req.body;
     try {
       //check if user already exists in database
@@ -53,11 +53,19 @@ router.post(
       jwt.sign(
         payload,
         process.env.jwtSecret,
-        { expiresIn: 36000 },
+        { expiresIn: '1d' },
         (error, token) => {
           if (error) throw error;
-          //send back jsonwebtoken
-          res.json({ token });
+          res.setHeader('Set-Cookie',
+            cookie.serialize('token', token, {
+              httpOnly: true,
+              secure: process.env.NODE_ENV !== "development",
+              maxAge: 60 * 60 * 24, // 1 day
+              sameSite: "strict",
+              path: "/"
+            })
+          )
+          return res.json({ sucess: true });
         }
       );
     } catch (error) {
