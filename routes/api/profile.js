@@ -172,15 +172,12 @@ router.delete(
   async (req, res) => {
     try {
       await Profile.updateOne({ user: req.user.id }, { $pull: { experience: { _id: req.params.exp_id } } })
-      const profile = await Profile.findOne({ user: req.user.id })
-      res.json(profile)
+      res.json({ success: true })
     } catch (error) {
-      console.log(error)
       res.status(500).send('Server Error')
     }
   }
 );
-
 
 router.delete(
   '/education/:edu_id',
@@ -188,14 +185,11 @@ router.delete(
   async (req, res) => {
     try {
       await Profile.updateOne({ user: req.user.id }, { $pull: { education: { _id: req.params.edu_id } } })
-      const profile = await Profile.findOne({ user: req.user.id })
-      res.json(profile)
+      res.json({ success: true })
     } catch (error) {
-      console.log(error)
       res.status(500).send('Server Error')
     }
   }
 );
-
 
 export default router;
