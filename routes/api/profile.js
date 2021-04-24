@@ -140,6 +140,34 @@ router.post(
   }
 );
 
+router.get(
+  '/experience/:exp_id',
+  auth,
+  async (req, res) => {
+    try {
+      const profile = await Profile.findOne({ user: req.user.id }).select('experience')
+      const experience = profile.experience.filter(exp => exp._id.toString() === req.params.exp_id)[0] || false
+      return res.json({ success: true, experience })
+    } catch (error) {
+      res.status(500).send('Server Error')
+    }
+  }
+);
+
+router.get(
+  '/education/:edu_id',
+  auth,
+  async (req, res) => {
+    try {
+      const profile = await Profile.findOne({ user: req.user.id }).select('education')
+      const education = profile.education.filter(edu => edu._id.toString() === req.params.edu_id)[0] || false
+      return res.json({ success: true, education })
+    } catch (error) {
+      res.status(500).send('Server Error')
+    }
+  }
+);
+
 router.get('/github/:username', async (req, res) => {
   const limit = req.query.limit || 5
   const { username } = req.params
