@@ -147,7 +147,6 @@ router.delete(
             )
             return res.json(await Post.findById(postId))
         } catch (error) {
-            console.log(error)
             if (error.kind === 'ObjectId') return res.status(404).json({ msg: 'Post not found' });
             res.status(500).send('Server Error')
         }
