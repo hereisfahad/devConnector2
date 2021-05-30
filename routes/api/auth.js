@@ -62,7 +62,7 @@ router.post(
               httpOnly: true,
               secure: process.env.NODE_ENV !== "development",
               maxAge: 60 * 60 * 24, // 1 day
-              sameSite: "none",
+              // sameSite: "none",
               path: "/"
             }))
           return res.json({ sucess: true });
@@ -83,7 +83,7 @@ router.post(
           httpOnly: true,
           secure: process.env.NODE_ENV !== "development",
           expires: new Date(0),
-          sameSite: "strict",
+          // sameSite: "strict",
           path: "/"
         }))
       return res.json({ sucess: true });
